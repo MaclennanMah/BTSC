@@ -5,6 +5,7 @@ import com.maclennanmah.BTSC.league_catalog_service.domain.LeagueEntity;
 import com.maclennanmah.BTSC.league_catalog_service.domain.LeagueNotFoundException;
 import com.maclennanmah.BTSC.league_catalog_service.domain.LeagueService;
 import com.maclennanmah.BTSC.league_catalog_service.domain.PagedResponse;
+import jakarta.validation.constraints.NotBlank;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Pageable;
@@ -56,7 +57,7 @@ public class LeagueController {
   }
 
   @DeleteMapping("/{id}")
-  void deleteLeague(@PathVariable(name = "leagueID") String leagueID) {
+  void deleteLeague(@PathVariable(name = "leagueID") @NotBlank String leagueID) {
     return;
   }
 }
