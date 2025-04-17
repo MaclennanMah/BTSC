@@ -4,12 +4,12 @@ import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.context.annotation.Import;
 
-@Import(TestcontainersConfiguration.class)
+@Import(ContainersConfig.class)
 @SpringBootTest
 class LeagueCatalogServiceApplicationTests {
 
-	@Test
-	void contextLoads() {
-	}
+  @Test
+  void contextLoads() {
+  }
 
 }
