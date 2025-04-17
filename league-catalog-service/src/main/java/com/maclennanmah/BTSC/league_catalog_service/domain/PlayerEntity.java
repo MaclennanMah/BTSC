@@ -18,6 +18,7 @@ import java.util.HashSet;
 import java.util.Set;
 import lombok.Getter;
 import lombok.Setter;
+import org.hibernate.annotations.NaturalId;
 
 @Entity
 @Table(name = "PLAYERS")
@@ -40,6 +41,7 @@ public class PlayerEntity implements Serializable {
 
   @Column(nullable = false, unique = true)
   @Email(regexp = "^[A-Z0-9._%+-]+@[A-Z0-9.-]+\\.[A-Z]{2,}$")
+  @NaturalId
   protected String email;
 
   @NotBlank
@@ -71,7 +73,7 @@ public class PlayerEntity implements Serializable {
     if (!(o instanceof PlayerEntity)) {
       return false;
     }
-    return id != null && id.equals(((PlayerEntity) o).getId());
+    return email != null && email.equals(((PlayerEntity) o).getEmail());
   }
 
   @Override

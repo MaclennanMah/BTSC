@@ -5,7 +5,7 @@ import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
-import jakarta.persistence.FetchType;
+import jakarta.persistence.ForeignKey;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -13,7 +13,6 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.JoinTable;
 import jakarta.persistence.ManyToMany;
 import jakarta.persistence.OneToMany;
-import jakarta.persistence.OneToOne;
 import jakarta.persistence.SequenceGenerator;
 import jakarta.persistence.Table;
 import jakarta.persistence.Temporal;
@@ -33,6 +32,7 @@ import java.util.List;
 import java.util.Set;
 import lombok.Getter;
 import lombok.Setter;
+import org.hibernate.annotations.NaturalId;
 
 @Entity
 @Table(name = "LEAGUES")
@@ -41,12 +41,13 @@ import lombok.Setter;
 public class LeagueEntity implements Serializable {
 
   @Id
-  @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "league_id_generator")
-  @SequenceGenerator(name = "league_id_generator", sequenceName = "league_id_generator")
+  @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "league_sequence_generator")
+  @SequenceGenerator(name = "league_sequence_generator", sequenceName = "league_sequence_generator")
   protected Long id;
 
   @NotBlank
-  @Column(nullable = false)
+  @Column(nullable = false, unique = true)
+  @NaturalId
   protected String name;
 
   protected String description;
@@ -93,11 +94,10 @@ public class LeagueEntity implements Serializable {
   @Column(nullable = false, name = "DAY_OF_WEEK")
   protected DayOfWeek dayOfWeek;
 
-  @Temporal(TemporalType.TIME)
   @Column(nullable = false, name = "START_TIME")
   protected ZonedDateTime startTime;
 
-  @Temporal(TemporalType.TIME)
+
   @Column(nullable = false, name = "END_TIME")
   protected ZonedDateTime endTime;
 
@@ -106,17 +106,10 @@ public class LeagueEntity implements Serializable {
   @DecimalMin(value = "0.0")
   protected BigDecimal price;
 
-  @OneToOne(
-      mappedBy = "league",
-      cascade = CascadeType.ALL,
-      orphanRemoval = true,
-      fetch = FetchType.LAZY)
-  protected FieldEntity field;
-
   @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
   @JoinTable(name = "league_player",
-      joinColumns = @JoinColumn(name = "league_id"),
-      inverseJoinColumns = @JoinColumn(name = "player_id")
+      joinColumns = @JoinColumn(name = "league_id", foreignKey = @ForeignKey(name = "fk_league_player_league")),
+      inverseJoinColumns = @JoinColumn(name = "player_id", foreignKey = @ForeignKey(name = "fk_league_player_player"))
   )
   protected Set<PlayerEntity> players = new HashSet<>();
 
@@ -126,7 +119,7 @@ public class LeagueEntity implements Serializable {
   )
   protected List<TeamEntity> teams = new ArrayList<>();
 
-  @OneToMany(mappedBy = "division",
+  @OneToMany(mappedBy = "league",
       cascade = CascadeType.ALL,
       orphanRemoval = true
   )
@@ -164,17 +157,6 @@ public class LeagueEntity implements Serializable {
     player.getLeagues().remove(this);
   }
 
-  public void setField(FieldEntity field) {
-    if (field == null) {
-      if (this.field != null) {
-        this.field.setLeague(null);
-      }
-    } else {
-      field.setLeague(this);
-    }
-    this.field = field;
-  }
-
   @Override
   public boolean equals(Object o) {
     if (this == o) {
@@ -183,7 +165,7 @@ public class LeagueEntity implements Serializable {
     if (!(o instanceof LeagueEntity)) {
       return false;
     }
-    return id != null && id.equals(((LeagueEntity) o).getId());
+    return name != null && name.equals(((LeagueEntity) o).getName());
   }
 
   @Override

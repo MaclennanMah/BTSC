@@ -22,6 +22,7 @@ import java.util.HashSet;
 import java.util.Set;
 import lombok.Getter;
 import lombok.Setter;
+import org.hibernate.annotations.NaturalId;
 
 
 @Entity
@@ -36,7 +37,8 @@ public class TeamEntity implements Serializable {
   protected Long id;
 
   @NotBlank
-  @Column(nullable = false)
+  @Column(nullable = false, unique = true)
+  @NaturalId
   protected String name;
 
   @NotNull
@@ -84,7 +86,7 @@ public class TeamEntity implements Serializable {
     if (!(o instanceof TeamEntity)) {
       return false;
     }
-    return id != null && id.equals(((TeamEntity) o).getId());
+    return name != null && name.equals(((TeamEntity) o).getName());
   }
 
   @Override

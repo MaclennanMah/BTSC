@@ -25,6 +25,7 @@ import java.util.List;
 import java.util.Set;
 import lombok.Getter;
 import lombok.Setter;
+import org.hibernate.annotations.NaturalId;
 
 @Entity
 @Table(name = "DIVISIONS")
@@ -42,6 +43,7 @@ public class DivisionEntity implements Serializable {
       unique = true,
       length = 128
   )
+  @NaturalId
   protected String name;
 
   @NotNull
@@ -99,7 +101,7 @@ public class DivisionEntity implements Serializable {
     if (!(o instanceof DivisionEntity)) {
       return false;
     }
-    return id != null && id.equals(((DivisionEntity) o).getId());
+    return name != null && name.equals(((DivisionEntity) o).getName());
   }
 
   @Override

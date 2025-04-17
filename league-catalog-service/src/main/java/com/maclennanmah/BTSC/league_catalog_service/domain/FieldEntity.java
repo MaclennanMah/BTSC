@@ -5,17 +5,17 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
 import jakarta.persistence.FetchType;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.MapsId;
 import jakarta.persistence.OneToOne;
-import jakarta.persistence.SequenceGenerator;
 import jakarta.persistence.Table;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import java.io.Serializable;
 import lombok.Getter;
 import lombok.Setter;
+import org.hibernate.annotations.NaturalId;
 
 @Entity
 @Table(name = "FIELDS")
@@ -24,12 +24,11 @@ import lombok.Setter;
 public class FieldEntity implements Serializable {
 
   @Id
-  @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "field_sequence_generator")
-  @SequenceGenerator(name = "field_sequence_generator", sequenceName = "field_sequence_generator")
   protected Long id;
 
   @NotBlank
   @Column(nullable = false)
+  @NaturalId
   protected String name;
 
   @NotNull
@@ -41,6 +40,8 @@ public class FieldEntity implements Serializable {
   protected String size;
 
   @OneToOne(fetch = FetchType.LAZY)
+  @MapsId
+  @JoinColumn(name = "id")
   protected LeagueEntity league;
 
   @Override
@@ -51,7 +52,7 @@ public class FieldEntity implements Serializable {
     if (!(o instanceof FieldEntity)) {
       return false;
     }
-    return id != null && id.equals(((FieldEntity) o).getId());
+    return name != null && name.equals(((FieldEntity) o).getName());
   }
 
   @Override
