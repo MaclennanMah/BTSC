@@ -15,7 +15,7 @@ class GlobalControllerExceptionHandler extends ResponseEntityExceptionHandler {
   private static final String SERVICE_NAME = "league-service";
 
   @ExceptionHandler(Exception.class)
-  ProblemDetail handleUnhandledException(Exception e) {
+  ProblemDetail handleGenericException(Exception e) {
     ProblemDetail problemDetail =
         ProblemDetail.forStatusAndDetail(HttpStatus.INTERNAL_SERVER_ERROR, e.getMessage());
     problemDetail.setTitle("Internal Server Error");
@@ -29,7 +29,7 @@ class GlobalControllerExceptionHandler extends ResponseEntityExceptionHandler {
   ProblemDetail handleNoResultException(LeagueNotFoundException e) {
     ProblemDetail problemDetail =
         ProblemDetail.forStatusAndDetail(HttpStatus.INTERNAL_SERVER_ERROR, e.getMessage());
-    problemDetail.setTitle("Product Not Found");
+    problemDetail.setTitle("League Not Found");
     problemDetail.setProperty("service", SERVICE_NAME);
     problemDetail.setProperty("error_category", "Generic");
     problemDetail.setProperty("timestamp", Instant.now());
