@@ -30,6 +30,7 @@ import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
 import org.hibernate.annotations.NaturalId;
@@ -38,6 +39,7 @@ import org.hibernate.annotations.NaturalId;
 @Table(name = "LEAGUES")
 @Getter
 @Setter
+@Builder
 public class LeagueEntity implements Serializable {
 
   @Id

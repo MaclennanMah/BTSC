@@ -4,7 +4,9 @@ import java.math.BigDecimal;
 import java.time.DayOfWeek;
 import java.time.ZonedDateTime;
 import java.util.Date;
+import lombok.Builder;
 
+@Builder
 public record League(
     String name,
     String description,

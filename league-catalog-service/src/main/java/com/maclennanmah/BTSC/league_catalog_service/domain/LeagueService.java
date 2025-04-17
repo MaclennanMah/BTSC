@@ -18,7 +18,7 @@ public class LeagueService {
   public PagedResponse<League> getLeagues(Pageable pageable) {
     Page<LeagueEntity> leaguesPage = leagueRepository.findAll(pageable);
     return new PagedResponse<>(
-        leaguesPage.getContent().stream().map(LeagueMapper::toLeague).toList(),
+        leaguesPage.getContent().stream().map(LeagueMapper::toLeagueDTO).toList(),
         leaguesPage.getTotalElements(),
         leaguesPage.getNumber() + 1,
         leaguesPage.getTotalPages(),
@@ -30,6 +30,6 @@ public class LeagueService {
   }
 
   public Optional<League> getLeagueByID(Long leagueID) {
-    return leagueRepository.findById(leagueID).map(LeagueMapper::toLeague);
+    return leagueRepository.findById(leagueID).map(LeagueMapper::toLeagueDTO);
   }
 }
