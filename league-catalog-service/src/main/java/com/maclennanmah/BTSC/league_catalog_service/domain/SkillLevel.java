@@ -1,5 +1,10 @@
 package com.maclennanmah.BTSC.league_catalog_service.domain;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
+
 public enum SkillLevel {
-  RECREATIONAL, INTERMEDIATE, ADVANCED
+  @JsonProperty("RECREATIONAL") RECREATIONAL,
+  @JsonProperty("INTERMEDIATE") INTERMEDIATE,
+  @JsonProperty("ADVANCED") ADVANCED;
 }
