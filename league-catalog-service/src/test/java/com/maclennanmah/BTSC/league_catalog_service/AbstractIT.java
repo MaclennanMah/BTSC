@@ -17,5 +17,6 @@ public abstract class AbstractIT {
   @BeforeEach
   void setUp() {
     RestAssured.port = port;
+    RestAssured.basePath = "/api";
   }
 }
