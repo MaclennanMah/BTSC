@@ -2,6 +2,7 @@ package com.maclennanmah.BTSC.league_catalog_service.domain;
 
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
+import jakarta.persistence.Embedded;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
@@ -18,9 +19,9 @@ import jakarta.persistence.Table;
 import jakarta.persistence.Temporal;
 import jakarta.persistence.TemporalType;
 import jakarta.validation.constraints.DecimalMin;
+import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
-import jakarta.validation.constraints.Size;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.time.DayOfWeek;
@@ -30,7 +31,6 @@ import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
-import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
 import org.hibernate.annotations.NaturalId;
@@ -39,7 +39,6 @@ import org.hibernate.annotations.NaturalId;
 @Table(name = "LEAGUES")
 @Getter
 @Setter
-@Builder
 public class LeagueEntity implements Serializable {
 
   @Id
@@ -80,12 +79,12 @@ public class LeagueEntity implements Serializable {
   protected Date registrationDeadline;
 
   @Column(nullable = false, name = "SEASON_LENGTH")
-  @Size(min = 1, max = 100)
+  @Min(1)
   protected int seasonLength;
 
   @NotNull
   @Column(nullable = false, name = "TEAM_SIZE")
-  @Size(min = 1, max = 30)
+  @Min(1)
   protected int teamSize;
 
   @NotNull
@@ -127,6 +126,7 @@ public class LeagueEntity implements Serializable {
   )
   protected List<DivisionEntity> divisions = new ArrayList<>();
 
+  @Embedded
   protected AddressEmbeddable address;
 
   public void addDivision(DivisionEntity division) {

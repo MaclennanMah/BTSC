@@ -19,26 +19,37 @@ class LeagueMapper {
         .startTime(leagueEntity.getStartTime())
         .endTime(leagueEntity.getEndTime())
         .price(leagueEntity.getPrice())
+        .street(leagueEntity.getAddress().getStreet())
+        .city(leagueEntity.getAddress().getCity())
+        .province(leagueEntity.getAddress().getProvince())
+        .zipCode(leagueEntity.getAddress().getZipCode())
+        .country(leagueEntity.getAddress().getCountry())
         .build();
   }
 
   public static LeagueEntity toLeagueEntity(League league) {
-    return LeagueEntity.builder()
-        .name(league.name())
-        .description(league.description())
-        .gender(league.gender())
-        .skillLevel(league.skillLevel())
-        .season(league.season())
-        .startDate(league.startDate())
-        .endDate(league.endDate())
-        .registrationDeadline(league.registrationDeadline())
-        .seasonLength(league.seasonLength())
-        .teamSize(league.teamSize())
-        .officiated(league.officiated())
-        .dayOfWeek(league.dayOfWeek())
-        .startTime(league.startTime())
-        .endTime(league.endTime())
-        .price(league.price())
-        .build();
+    LeagueEntity newLeague = new LeagueEntity();
+    newLeague.setAddress(new AddressEmbeddable());
+    newLeague.setName(league.name());
+    newLeague.setDescription(league.description());
+    newLeague.setGender(league.gender());
+    newLeague.setSkillLevel(league.skillLevel());
+    newLeague.setSeason(league.season());
+    newLeague.setStartDate(league.startDate());
+    newLeague.setEndDate(league.endDate());
+    newLeague.setRegistrationDeadline(league.registrationDeadline());
+    newLeague.setSeasonLength(league.seasonLength());
+    newLeague.setTeamSize(league.teamSize());
+    newLeague.setOfficiated(league.officiated());
+    newLeague.setDayOfWeek(league.dayOfWeek());
+    newLeague.setStartTime(league.startTime());
+    newLeague.setEndTime(league.endTime());
+    newLeague.setPrice(league.price());
+    newLeague.getAddress().setStreet(league.street());
+    newLeague.getAddress().setCity(league.city());
+    newLeague.getAddress().setProvince(league.province());
+    newLeague.getAddress().setZipCode(league.zipCode());
+    newLeague.getAddress().setCountry(league.country());
+    return newLeague;
   }
 }

@@ -3,7 +3,6 @@ package com.maclennanmah.BTSC.league_catalog_service.web;
 import com.maclennanmah.BTSC.league_catalog_service.domain.League;
 import com.maclennanmah.BTSC.league_catalog_service.domain.LeagueService;
 import com.maclennanmah.BTSC.league_catalog_service.domain.PagedResponse;
-import jakarta.validation.constraints.NotBlank;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Pageable;
@@ -52,9 +51,9 @@ public class LeagueController {
     return leagueService.updateLeague(leagueID, league);
   }
 
-  @DeleteMapping("/{LeagueID}")
+  @DeleteMapping("/{leagueID}")
   @ResponseStatus(HttpStatus.NO_CONTENT)
-  void deleteLeague(@PathVariable @NotBlank Long leagueID) {
+  void deleteLeague(@PathVariable Long leagueID) {
     log.info("Deleting league with id: {}", leagueID);
     leagueService.deleteLeague(leagueID);
   }

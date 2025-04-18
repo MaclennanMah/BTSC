@@ -22,7 +22,12 @@ public record League(
     DayOfWeek dayOfWeek,
     ZonedDateTime startTime,
     ZonedDateTime endTime,
-    BigDecimal price
+    BigDecimal price,
+    String street,
+    String city,
+    String province,
+    String zipCode,
+    String country
 ) {
 
 }
