@@ -31,6 +31,8 @@ CREATE SEQUENCE team_sequence_generator
     CACHE 1;
 
 
+--TODO: Add more constraints
+
 -- Create table for players
 CREATE TABLE players
 (
