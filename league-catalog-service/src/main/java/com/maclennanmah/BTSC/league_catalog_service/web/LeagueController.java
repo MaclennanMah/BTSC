@@ -1,8 +1,6 @@
 package com.maclennanmah.BTSC.league_catalog_service.web;
 
 import com.maclennanmah.BTSC.league_catalog_service.domain.League;
-import com.maclennanmah.BTSC.league_catalog_service.domain.LeagueEntity;
-import com.maclennanmah.BTSC.league_catalog_service.domain.LeagueNotFoundException;
 import com.maclennanmah.BTSC.league_catalog_service.domain.LeagueService;
 import com.maclennanmah.BTSC.league_catalog_service.domain.PagedResponse;
 import jakarta.validation.constraints.NotBlank;
@@ -11,7 +9,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -36,28 +33,29 @@ public class LeagueController {
     return leagueService.getLeagues(pageable);
   }
 
-  @GetMapping("/{code}")
-  ResponseEntity<League> getLeague(@PathVariable Long code) {
-    log.info("Fetching league with id: {}", code);
-    return leagueService.getLeagueByID(code)
-        .map(ResponseEntity::ok)
-        .orElseThrow(() -> LeagueNotFoundException.forId(code));
+  @GetMapping("/{leagueID}")
+  League getLeague(@PathVariable Long leagueID) {
+    log.info("Fetching league with id: {}", leagueID);
+    return leagueService.getLeagueByID(leagueID);
+
   }
 
   @PostMapping
   @ResponseStatus(HttpStatus.CREATED)
   League createLeague(@RequestBody League league) {
     log.info("Creating league: {}", league);
-    return null;
+    return leagueService.createLeague(league);
   }
 
-  @PutMapping("/{id}")
-  LeagueEntity updateLeague(@PathVariable String leagueID) {
-    return new LeagueEntity();
+  @PutMapping("/{leagueID}")
+  League updateLeague(@PathVariable Long leagueID, @RequestBody League league) {
+    return leagueService.updateLeague(leagueID, league);
   }
 
-  @DeleteMapping("/{id}")
-  void deleteLeague(@PathVariable(name = "leagueID") @NotBlank String leagueID) {
-    return;
+  @DeleteMapping("/{LeagueID}")
+  @ResponseStatus(HttpStatus.NO_CONTENT)
+  void deleteLeague(@PathVariable @NotBlank Long leagueID) {
+    log.info("Deleting league with id: {}", leagueID);
+    leagueService.deleteLeague(leagueID);
   }
 }
