@@ -1,0 +1,50 @@
+package com.maclennanmah.BTSC.sportservice.web.exception;
+
+import com.maclennanmah.BTSC.sportservice.domain.shared.exceptions.LeagueNotFoundException;
+import com.maclennanmah.BTSC.sportservice.domain.shared.exceptions.PlayerNotFoundException;
+import java.time.Instant;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ProblemDetail;
+import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.RestControllerAdvice;
+import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
+
+@RestControllerAdvice(annotations = RestController.class)
+class GlobalControllerExceptionHandler extends ResponseEntityExceptionHandler {
+
+  private static final String SERVICE_NAME = "sport-service";
+
+  @ExceptionHandler(Exception.class)
+  ProblemDetail handleGenericException(Exception e) {
+    ProblemDetail problemDetail =
+        ProblemDetail.forStatusAndDetail(HttpStatus.INTERNAL_SERVER_ERROR, e.getMessage());
+    problemDetail.setTitle("Internal Server Error");
+    problemDetail.setProperty("service", SERVICE_NAME);
+    problemDetail.setProperty("error_category", "Generic");
+    problemDetail.setProperty("timestamp", Instant.now());
+    return problemDetail;
+  }
+
+  @ExceptionHandler(LeagueNotFoundException.class)
+  ProblemDetail handleNoResultException(LeagueNotFoundException e) {
+    ProblemDetail problemDetail =
+        ProblemDetail.forStatusAndDetail(HttpStatus.NOT_FOUND, e.getMessage());
+    problemDetail.setTitle("League Not Found");
+    problemDetail.setProperty("service", SERVICE_NAME);
+    problemDetail.setProperty("error_category", "Generic");
+    problemDetail.setProperty("timestamp", Instant.now());
+    return problemDetail;
+  }
+
+  @ExceptionHandler(PlayerNotFoundException.class)
+  ProblemDetail handlePlayerNotFoundException(PlayerNotFoundException e) {
+    ProblemDetail problemDetail =
+        ProblemDetail.forStatusAndDetail(HttpStatus.NOT_FOUND, e.getMessage());
+    problemDetail.setTitle("Player Not Found");
+    problemDetail.setProperty("service", SERVICE_NAME);
+    problemDetail.setProperty("error_category", "Generic");
+    problemDetail.setProperty("timestamp", Instant.now());
+    return problemDetail;
+  }
+}

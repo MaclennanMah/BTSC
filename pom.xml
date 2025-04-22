@@ -17,7 +17,7 @@
 
   <modules>
     <module>
-      league-catalog-service
+      sport-service
     </module>
   </modules>
 </project>
