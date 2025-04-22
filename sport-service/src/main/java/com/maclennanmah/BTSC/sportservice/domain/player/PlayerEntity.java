@@ -1,6 +1,9 @@
-package com.maclennanmah.BTSC.league_catalog_service.domain;
+package com.maclennanmah.BTSC.sportservice.domain.player;
 
 
+import com.maclennanmah.BTSC.sportservice.domain.division.DivisionEntity;
+import com.maclennanmah.BTSC.sportservice.domain.league.LeagueEntity;
+import com.maclennanmah.BTSC.sportservice.domain.team.TeamEntity;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -40,7 +43,7 @@ public class PlayerEntity implements Serializable {
   protected String lastName;
 
   @Column(nullable = false, unique = true)
-  @Email(regexp = "^[A-Z0-9._%+-]+@[A-Z0-9.-]+\\.[A-Z]{2,}$")
+  @Email
   @NaturalId
   protected String email;
 
@@ -64,6 +67,36 @@ public class PlayerEntity implements Serializable {
 
   @ManyToMany(mappedBy = "players")
   protected Set<DivisionEntity> divisions = new HashSet<>();
+
+  public void AddTeam(TeamEntity teamEntity) {
+    teams.add(teamEntity);
+    teamEntity.getPlayers().add(this);
+  }
+
+  public void RemoveTeam(TeamEntity teamEntity) {
+    teams.remove(teamEntity);
+    teamEntity.getPlayers().remove(this);
+  }
+
+  public void AddDivision(DivisionEntity divisionEntity) {
+    divisions.add(divisionEntity);
+    divisionEntity.getPlayers().add(this);
+  }
+
+  public void RemoveDivision(DivisionEntity divisionEntity) {
+    divisions.remove(divisionEntity);
+    divisionEntity.getPlayers().remove(this);
+  }
+
+  public void AddLeague(LeagueEntity leagueEntity) {
+    leagues.add(leagueEntity);
+    leagueEntity.getPlayers().add(this);
+  }
+
+  public void RemoveLeague(LeagueEntity leagueEntity) {
+    leagues.remove(leagueEntity);
+    leagueEntity.getPlayers().remove(this);
+  }
 
   @Override
   public boolean equals(Object o) {
