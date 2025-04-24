@@ -19,6 +19,8 @@ public class LeagueService {
 
   private final LeagueRepository repository;
 
+  private final LeagueMapper leagueMapper;
+
   /**
    * Retrieves a paginated list of leagues.
    *
@@ -28,7 +30,7 @@ public class LeagueService {
   public PagedResponse<League> getLeagues(@NotNull Pageable pageable) {
     Page<LeagueEntity> leaguesPage = repository.findAll(pageable);
     return new PagedResponse<>(
-        leaguesPage.getContent().stream().map(LeagueMapper::toLeagueDTO).toList(),
+        leaguesPage.getContent().stream().map(leagueMapper::leagueEntityToLeague).toList(),
         leaguesPage.getTotalElements(),
         leaguesPage.getNumber() + 1,
         leaguesPage.getTotalPages(),
@@ -47,7 +49,7 @@ public class LeagueService {
    * @throws LeagueNotFoundException if the league with the given ID does not exist.
    */
   public League getLeagueByID(@NotNull Long leagueID) {
-    return repository.findById(leagueID).map(LeagueMapper::toLeagueDTO)
+    return repository.findById(leagueID).map(leagueMapper::leagueEntityToLeague)
         .orElseThrow(() -> LeagueNotFoundException.forId(leagueID));
   }
 
@@ -59,9 +61,9 @@ public class LeagueService {
    */
   @Transactional
   public League createLeague(@NotNull @Valid League league) {
-    LeagueEntity leagueEntity = LeagueMapper.toLeagueEntity(league);
+    LeagueEntity leagueEntity = leagueMapper.leagueToLeagueEntity(league);
     LeagueEntity savedLeagueEntity = repository.save(leagueEntity);
-    return LeagueMapper.toLeagueDTO(savedLeagueEntity);
+    return leagueMapper.leagueEntityToLeague(savedLeagueEntity);
   }
 
   /**
@@ -79,7 +81,7 @@ public class LeagueService {
     updateLeagueEntity(leagueEntity, league);
     LeagueEntity updatedLeagueEntity = repository.save(leagueEntity);
 
-    return LeagueMapper.toLeagueDTO(updatedLeagueEntity);
+    return leagueMapper.leagueEntityToLeague(updatedLeagueEntity);
   }
 
   @Transactional
